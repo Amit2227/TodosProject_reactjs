@@ -9,18 +9,25 @@ import React,{useState} from 'react';
 
 function App() {
 
-  let addTodo;
+  let initTodo;
+  if(localStorage.getItem("todos")){
+initTodo=[];
+  }
+
+  else{
+
+    initTodo = JSON.parse(localStorage.getItem("todos"));
+  }
   const onDelete=(todo)=>{
-    console.log("I amonDelete of todo", todo);
+    console.log("I am onDelete of todo", todo);
     setTodos(todos.filter((e)=>{
       return e!==todo;
     }));
-
+localStorage.getItem("todos");
   }
 
-  const addtodo=(title, desc)=>{
-
-    console.log("I am adding this todo",title, desc);
+  const addTodoItem=(title, desc)=>{
+    console.log("I am adding this todo", title, desc);
     let sno;
     if(todos.length==0){
       sno=1;
@@ -29,7 +36,6 @@ function App() {
     {
       sno=todos[todos.length-1].sno+1
     }
-
     const myTodo={
       sno: sno,
       title: title,
@@ -37,27 +43,11 @@ function App() {
     }
 setTodos([...todos, myTodo])
 console.log(myTodo)
+  localStorage.setItem("todos", JSON.stringify(todos))
 
   }
 const [todos, setTodos]=useState([
-  {
-    sno: 1,
-    title: "Go to the Market",
-    desc: "You need to go Market to get this jobs done1"
-  },
-
-  {
-    sno: 2,
-    title: "Go to the School",
-    desc: "You need to go Market to get this jobs done2"
-  },
-
-  {
-    sno: 3,
-    title: "Go to the Mall",
-    desc: "You need to go Market to get this jobs done3"
-  },
-
+ 
 
 ]);
 
@@ -65,7 +55,7 @@ const [todos, setTodos]=useState([
     
     <>
     <Header title= "My Todo's List" searchBar={true} />
-    <AddTodo addTodo={addTodo}/>
+    <AddTodo addTodo={addTodoItem}/>
     <Todos todos={todos} onDelete={onDelete}/>
     <Footer/>
     </>
